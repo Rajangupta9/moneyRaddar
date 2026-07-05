@@ -48,6 +48,12 @@ export interface CategoryBreakdown {
   pct: number;
 }
 
+export interface MonthlyTrendPoint {
+  month: string;
+  spend: number;
+  income: number;
+}
+
 export interface Summary {
   period: { start: string; end: string };
   total_income: number;
@@ -65,7 +71,7 @@ export interface Summary {
   } | null;
   recurring_total: number;
   recurring_count: number;
-  monthly_trend: { month: string; spend: number; income: number }[];
+  monthly_trend: MonthlyTrendPoint[];
 }
 
 export interface Insight {

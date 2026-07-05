@@ -1,23 +1,43 @@
 :root {
-  --bg: #f7f8fa;
+  --bg: #f9f9f7;
   --surface: #ffffff;
-  --text: #1a1d21;
-  --muted: #6b7280;
+  --text: #0b0b0b;
+  --muted: #52514e;
   --border: #e5e7eb;
-  --accent: #2563eb;
-  --ok: #16a34a;
-  --bad: #dc2626;
+  --accent: #2a78d6;
+  --ok: #006300;
+  --bad: #d03b3b;
+
+  /* Data-viz tokens — validated default palette (dataviz skill).
+     Chart marks reference these as var(--…) so light/dark swap in one place. */
+  --viz-surface: #fcfcfb;
+  --series-blue: #2a78d6; /* spend / primary magnitude */
+  --series-aqua: #1baf7a; /* income */
+  --viz-grid: #e1e0d9;
+  --viz-axis: #c3c2b7;
+  --viz-label: #898781;
+  --good: #006300;
   color-scheme: light dark;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0f1115;
+    --bg: #0d0d0d;
     --surface: #171a1f;
-    --text: #e7e9ee;
-    --muted: #9aa1ad;
+    --text: #ffffff;
+    --muted: #c3c2b7;
     --border: #2a2e37;
-    --accent: #4f8cff;
+    --accent: #3987e5;
+    --ok: #0ca30c;
+    --bad: #e66767;
+
+    --viz-surface: #1a1a19;
+    --series-blue: #3987e5;
+    --series-aqua: #199e70;
+    --viz-grid: #2c2c2a;
+    --viz-axis: #383835;
+    --viz-label: #898781;
+    --good: #0ca30c;
   }
 }
 
@@ -108,4 +128,324 @@ code {
   padding: 0.1rem 0.35rem;
   border-radius: 4px;
   font-size: 0.85em;
+}
+
+/* ------------------------------------------------------------------ */
+/* Phase 2 — dashboard, upload, transactions                          */
+/* ------------------------------------------------------------------ */
+
+.page-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+.page-head h1 {
+  margin: 0;
+}
+.page-head .sub {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* Buttons */
+.btn {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.btn.primary:hover {
+  filter: brightness(1.05);
+  color: #fff;
+}
+
+/* Upload dropzone */
+.dropzone {
+  border: 2px dashed var(--border);
+  border-radius: 14px;
+  padding: 3rem 2rem;
+  text-align: center;
+  background: var(--surface);
+  transition: border-color 0.15s, background 0.15s;
+  cursor: pointer;
+}
+.dropzone.drag {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+}
+.dropzone .big {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0.25rem 0;
+}
+.dropzone .hint {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.upload-error {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--bad) 40%, var(--border));
+  background: color-mix(in srgb, var(--bad) 8%, var(--surface));
+  color: var(--bad);
+  font-size: 0.9rem;
+}
+.samples {
+  margin-top: 1.5rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* Spinner */
+.spinner {
+  width: 34px;
+  height: 34px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 0.75rem;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* KPI row */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+@media (max-width: 780px) {
+  .kpi-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.kpi {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+}
+.kpi .label {
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.kpi .value {
+  font-size: 1.7rem;
+  font-weight: 700;
+  margin-top: 0.35rem;
+  line-height: 1.1;
+}
+.kpi .value.good {
+  color: var(--good);
+}
+.kpi .value.bad {
+  color: var(--bad);
+}
+.kpi .context {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin-top: 0.3rem;
+}
+
+/* Card grid for charts */
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+@media (max-width: 900px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+}
+.card h2 {
+  margin: 0 0 0.15rem;
+  font-size: 1rem;
+}
+.card .card-sub {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin: 0 0 0.75rem;
+}
+.card.wide {
+  grid-column: 1 / -1;
+}
+
+/* Biggest-transaction callout */
+.callout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.callout .amt {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--bad);
+}
+.callout .who {
+  font-weight: 600;
+}
+.callout .meta {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* Category legend chips beside the bar chart */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+}
+.chip .swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--series-blue);
+}
+
+/* Transactions table */
+.toolbar {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 0.9rem;
+  flex-wrap: wrap;
+}
+.toolbar input,
+.toolbar select {
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.9rem;
+}
+.toolbar input {
+  flex: 1;
+  min-width: 180px;
+}
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+table.txns {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+table.txns th,
+table.txns td {
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+table.txns th {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+}
+table.txns td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+table.txns td.desc {
+  white-space: normal;
+  min-width: 220px;
+  color: var(--muted);
+}
+table.txns tr:last-child td {
+  border-bottom: none;
+}
+.amt-in {
+  color: var(--good);
+  font-variant-numeric: tabular-nums;
+}
+.amt-out {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.pill {
+  display: inline-block;
+  padding: 0.12rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  color: var(--text);
+}
+
+/* Empty state */
+.empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--muted);
+}
+.empty .big {
+  font-size: 1.1rem;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+/* Chart tooltip (shared by Recharts custom tooltips) */
+.viz-tip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+.viz-tip .row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.viz-tip .k {
+  color: var(--muted);
+}
+.viz-tip .v {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  margin-left: auto;
 }

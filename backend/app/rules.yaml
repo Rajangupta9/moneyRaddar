@@ -1,0 +1,85 @@
+# Stage 3 categorization rules — keyword/regex -> canonical Category.
+#
+# Categories are tried top-to-bottom; the FIRST matching pattern wins, so order
+# encodes priority. Patterns are case-insensitive regexes matched against the
+# transaction's description + extracted merchant. This file is meant to be
+# human-editable — add merchants as you encounter them.
+
+categories:
+  Salary:
+    - '\bSALARY\b'
+    - '\bSAL/'
+    - 'PAYROLL'
+    - 'STIPEND'
+    - 'FREELANCE'
+
+  Subscriptions:
+    - 'NETFLIX'
+    - 'SPOTIFY'
+    - 'PRIME VIDEO'
+    - 'AMAZON PRIME'
+    - 'HOTSTAR'
+    - 'YOUTUBE'
+    - 'SUBSCRIPTION'
+
+  Food:
+    - 'SWIGGY'
+    - 'ZOMATO'
+    - 'DOMINOS'
+    - 'PIZZA'
+    - 'STARBUCKS'
+    - 'BIGBASKET'
+    - 'BLINKIT'
+    - 'INSTAMART'
+    - 'GROCERY'
+    - 'COFFEE'
+    - 'RESTAURANT'
+    - '\bCAFE\b'
+
+  Travel:
+    - 'UBER'
+    - '\bOLA\b'
+    - 'IRCTC'
+    - 'FLIGHT'
+    - '\bTRAIN\b'
+    - '\bCAB\b'
+    - 'MAKEMYTRIP'
+    - 'REDBUS'
+    - 'IXIGO'
+
+  Shopping:
+    - 'AMAZON'
+    - 'FLIPKART'
+    - 'MYNTRA'
+    - 'AJIO'
+    - 'APPAREL'
+    - 'SHOPPING'
+
+  EMI:
+    - '\bEMI\b'
+    - '\bLOAN\b'
+    - 'BAJAJ FINANCE'
+
+  Investments:
+    - '\bSIP\b'
+    - 'MUTUAL FUND'
+    - 'ZERODHA'
+    - 'GROWW'
+    - '\bELSS\b'
+    - 'STOCKS'
+
+  Rent:
+    - '\bRENT\b'
+
+  Bills:
+    - 'ELECTRICITY'
+    - '\bBESCOM\b'
+    - 'WATER BILL'
+    - 'GAS BILL'
+    - '\bBILL\b'
+    - 'RECHARGE'
+    - 'BROADBAND'
+    - '\bDTH\b'
+    - 'INSURANCE'
+    - '\bLIC\b'
+    - 'PREMIUM'
